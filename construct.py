@@ -33,6 +33,10 @@ register("constant", lambda x: x)
 register("generic", lambda x: eval(x))
 
 
+def parse(config: dict):
+    return _parse(config, True)
+
+
 def _parse(config: dict, top_level: bool = True):
     keys = list(config.keys())
 
