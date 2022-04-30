@@ -28,10 +28,10 @@ def register(type_: str, f):
     _construct._register(type_, f)
 
 
+# Register some custom functions
 register("constant", lambda x: x)
 register("generic", lambda x: eval(x))
 
-TOP_LEVEL = True
 
 def _parse(config: dict, top_level: bool = True):
     keys = list(config.keys())
