@@ -1,0 +1,42 @@
+# This file is an example configuration file on how to construct a
+# convolutional neural network using PyTorch
+[0]
+type = "torch.nn.Sequential"
+
+# First layer is a convolutional layer
+[0.0]
+type = "torch.nn.Conv2d"
+args = [1, 10, 3]
+
+# Then we add a ReLU nonlinearity
+[0.1]
+type = "torch.nn.ReLU"
+
+# We flatten the output of the convolutional layer
+[0.2]
+type = "torch.nn.Flatten"
+args = []
+
+# Then add a linear layer
+[0.3]
+type = "torch.nn.Linear"
+args = ["<-constant(2)", 5]
+
+# Don't use a bias for the linear layer
+[0.3.kwargs]
+bias = false
+
+# Then we have another ReLU nonlinearity
+[0.4]
+type = "torch.nn.ReLU"
+
+# Followed by a linear layer
+[0.5]
+type = "torch.nn.Linear"
+args = ["<-constant(5)", 1]
+
+# And finally, use a bias on the last layer
+[0.5.bias]
+type = "constant"
+args = [true]
+

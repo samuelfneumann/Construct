@@ -3,8 +3,9 @@ import os
 # Any modules you need to construct objects from should be placed in an imports
 # file
 _PREFIX = os.environ.get("CONSTRUCT_PY_IMPORTS_DIR", ".")
-_CONFIG_FILE = f"{_PREFIX}/.construct_imports.py"
+_CONFIG_FILE = f"{_PREFIX}/.construct_py_imports.py"
 if os.path.exists(_CONFIG_FILE):
+    print(f"imorting from {_CONFIG_FILE}")
     exec(open(_CONFIG_FILE).read())
 
 # Alternatively, you can import the main module, in which case the program will
@@ -14,26 +15,30 @@ if os.path.exists(_CONFIG_FILE):
 # import __main__
 
 
-class _Construct:
+class _Custom:
     def __init__(self):
         self._custom_ops = {}
 
     def _register(self, type_: str, f):
         self._custom_ops[type_] = f
 
-    def _construct(self, type_: str):
-        return self._custom_ops.get(type_, eval(type_))
+    def _custom(self, type_: str):
+        if type_ not in self._custom_ops:
+            return eval(type_)
+        return self._custom_ops[type_]
+
+        # return self._custom_ops.get(type_, eval(type_))
 
 
-_construct = _Construct()
+_custom = _Custom()
 
 
-def construct(type_: str):
-    return _construct._construct(type_)
+def _construct(type_: str):
+    return _custom._custom(type_)
 
 
 def register(type_: str, f):
-    _construct._register(type_, f)
+    _custom._register(type_, f)
 
 
 def constant(x):
@@ -101,19 +106,11 @@ def _parse(config: dict, top_level: bool = True):
                 kwargs[k] = _eval(config["kwargs"][k])
 
     # Construct the object
-    constructor = construct(config["type"])
+    constructor = _construct(config["type"])
     return constructor(*args, **kwargs)
 
 
 def _eval(expr):
-    if isinstance(expr, str) and len(expr) > 1 and expr[0] == ":":
-        return eval(expr[1:])
+    if isinstance(expr, str) and len(expr) > 2 and expr.startswith("<-"):
+        return eval(expr[2:])
     return expr
-
-
-# with open("rng.toml", "rb") as i:
-#     d = tomli.load(i)
-
-# print(d)
-# out = construct(d["1"]["type"], d["1"]["args"], d["1"]["kwargs"])
-# print("out", _parse(d))
