@@ -10,10 +10,10 @@ if os.path.exists(_INCLUDES_FILE):
     print(f"Construct.py: using includes file {_INCLUDES_FILE}", file=stderr)
     exec(open(_INCLUDES_FILE).read())
 
-_IMPORTS_DIR = f"{_PREFIX}"
-if os.path.exists(_IMPORTS_DIR):
-    sys.path.append(_IMPORTS_DIR)
-    print(f"Construct.py: using imports file {_IMPORTS_DIR}",
+_IMPORTS_FILE = f"{_PREFIX}/construct_py_imports.py"
+if os.path.exists(_IMPORTS_FILE):
+    sys.path.append(_IMPORTS_FILE)
+    print(f"Construct.py: using imports file {_IMPORTS_FILE}",
           file=stderr)
     from construct_py_imports import *
 
