@@ -10,7 +10,7 @@ if os.path.exists(_CONFIG_FILE):
 # Alternatively, you can import the main module, in which case the program will
 # "just work". Two caveats to this approach:
 #   1) This can very easily turn your program into a pretzel
-#   2) In the configuration files, modules need to be prefixed with __module__
+#   2) In the configuration files, modules need to be prefixed with __main__
 # import __main__
 
 
@@ -22,11 +22,7 @@ class _Construct:
         self._custom_ops[type_] = f
 
     def _construct(self, type_: str):
-        if type_ not in self._custom_ops:
-            return eval(type_)
-        return self._custom_ops[type_]
-
-        # return self._custom_ops.get(type_, eval(type_))
+        return self._custom_ops.get(type_, eval(type_))
 
 
 _construct = _Construct()
