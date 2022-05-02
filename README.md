@@ -106,8 +106,18 @@ network = parse(config)
 
 Generally, you'll be using Construct.py to configure objects from some module.
 To do that, Construct.py needs to know about these modules. Construct.py will
-look in the file `construct_py_includes.py` to find a list of modules to
-import.
+look in two different files to qualify names:
+1. The *includes* file `construct_py_includes.py`
+2. The *imports* file `construct_py_imports.py`
+The difference between these two files is the following:
+1. The source code of the `construct_py_includes.py` file is embedded in the
+   source code of Construct.py above all the logic of Construct.py. The
+   contents of `construct_py_includes.py` is run before Construct.py is
+   interpreted upon importing Construct.py into your own module.
+2. The contents of `construct_py_imports` is **imported** into Construct.py
+   before Construct.py is interpreted upong importing Construct.py into your
+   own module. That is, `from construct_py_imports import *` is run in
+   Construct.py before any actual code of Construct.py is run.
 
 For example, if we wanted to
 parse the above PyTorch configuration file, then we would need a
@@ -116,6 +126,13 @@ Construct.py to import PyTorch:
 ```python
 import torch
 ```
+This would **not** work if we used `import torch` in the imports file. This is
+because what would happen is the imports file would import torch, then
+Construct.py would import the imports file. Construct.py would **not** import
+torch. Construct.py runs the actual source code of the
+includes file (it does not import the includes file), and so Construct.py would
+import torch when `import torch` is placed in the includes file.
+
 Actually, the includes file can be used to defined anything you want
 Construct.py to know about. For example, you could define a function in that
 file in which case that function is available to **call** in your
@@ -367,7 +384,7 @@ args = [...]
 then `make_agent(args..., kwargs...)` will be called when parsing the
 configuration file.
 
-## __MAIN__
+## __main__
 
 There is an alternative way to run Construct.py. If you set the environment
 variable `CONSTRUCT_PY_USE_MAIN` (to anything), then you can import anything from
@@ -383,4 +400,3 @@ can automatically use it. There are two caveats:
 ## ToDo
 
 - [ ] Docstrings
-- [ ] Document imports file
