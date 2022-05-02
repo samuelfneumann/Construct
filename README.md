@@ -1,6 +1,7 @@
 # Construct.py
 
 The configuration module you never knew existed but desperately need.
+**Dynamically** configure objects with **static** configuration files!
 
 This is still under development, expect some adventures!
 
@@ -31,7 +32,7 @@ single convolutional layer and two dense layers, you could use:
 # of Construct.py are shown. I don't recommend mixing so many features, but I
 # have added them here as an example.
 [0]
-type = "torch.nn.Sequential"
+type = "torch.nn.Sequential"  # Notice the fully qualified name
 
 # First layer is a convolutional layer
 [0.0]
@@ -79,6 +80,24 @@ Note that you can use any configuration file type that can be parsed into a
 
 For example configuration files, see the `examples/` directory.
 
+The great thing about Construct.py is that it allows you to **dynamically**
+create objects from **static** configuration files. What do I mean by this? Let
+me give an example:
+
+In my research in reinforcement learning, we deal with neural networks to
+approximate value functions. If that doesn't make sense, then just consider a
+mathematical function `f` that takes in some number of inputs `(x, y, ...)`. In
+my research, the number of inputs changes based on which environment my
+experiment is run on. For example, if I run an experiment on the MountainCar
+game, then there are 2 inputs to `f` (the neural network). If I run on the
+CartPole game, there are inputs to `f`. Construct.py allows me to write a
+**single** configuration file for a neural network such that, when I run my
+experiment on MountainCar, the configuration file generates a neural network
+that expects 2 inputs. I can use the **exact same** configuration file to run
+an experiment on CartPole, and the configuration file will create a neural
+network that expects 4 inputs. Everything else will remain the same, but the
+number of inputs will change based on the environment I run on.
+
 ## Installation <a name="installation"></a>
 To install Construct.py:
 ```
@@ -109,6 +128,7 @@ To do that, Construct.py needs to know about these modules. Construct.py will
 look in two different files to qualify names:
 1. The *includes* file `construct_py_includes.py`
 2. The *imports* file `construct_py_imports.py`
+
 The difference between these two files is the following:
 1. The source code of the `construct_py_includes.py` file is embedded in the
    source code of Construct.py above all the logic of Construct.py. The
@@ -131,7 +151,9 @@ because what would happen is the imports file would import torch, then
 Construct.py would import the imports file. Construct.py would **not** import
 torch. Construct.py runs the actual source code of the
 includes file (it does not import the includes file), and so Construct.py would
-import torch when `import torch` is placed in the includes file.
+import torch when `import torch` is placed in the includes file. Hence if you
+ever need to construct an object from another module, the `import` statement
+**must** be in the includes file.
 
 Actually, the includes file can be used to defined anything you want
 Construct.py to know about. For example, you could define a function in that
