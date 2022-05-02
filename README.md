@@ -383,3 +383,4 @@ can automatically use it. There are two caveats:
 ## ToDo
 
 - [ ] Docstrings
+- [ ] Document definitions file

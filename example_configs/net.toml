@@ -19,7 +19,7 @@ type = "torch.nn.ReLU"
 # but is here to showcase the functionality of the generic type.
 [0.2]
 type = "generic"
-args = ["<-torch.nn.Flatten()"]
+args = ["<-identity(torch.nn.Flatten())"]
 
 # Then add a linear layer
 [0.3]
