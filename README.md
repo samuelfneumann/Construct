@@ -6,11 +6,17 @@ The configuration you never knew existed but desperately need.
 1. [What is Construct.py?](#what_is_construct_py)
 2. [Installation](#installation)
 3. [Usage](#usage)
-4. [Modules](#modules)
-4. [Layout of (TOML) Configuration Files](#layout)
-4. [Types](#types)
-4. [Args](#args)
-4. [Kwargs](#kwargs)
+	1. [Modules](#modules)
+1. [Layout of (TOML) Configuration Files](#layout)
+	1. [Types](#types)
+	2. [Args](#args)
+	3. [Kwargs](#kwargs)
+1. [Type Descriptions](#type_descriptions)
+	1. [X](#x)
+	2. [constant](#constant)
+	3. [generic](#generic)
+1. [Calling Function Defined in Your Code](#calling)
+1. [Custom Types](#custom_types)
 
 ## What is Construct.py?<a name="what_is_construct_py"></a>
 
@@ -222,7 +228,7 @@ key-value pairs:
 [0.x.y.kwargs]
 "key1" = "value1"
 "key2" = "value2"
-...
+#...
 ```
 
 Like positional arguments, there is an alternative way of specifying keyword
@@ -237,7 +243,7 @@ The two methods of using keyword arguments are mixable.
 
 ## `type`s <a name="type_descriptions"></a>
 
-### `X`
+### `X` <a name="x"></a>
 
 The syntax `X` allows us to create an object or run a function with the symbol
 `X`. To this function, we can pass in any arguments using the `args` key, or we
@@ -290,7 +296,18 @@ access the symbol `y` in your imports file, that's how `y` must be specified
 in your configuration file as well. This goes for all `type`s, not just the `X`
 type.
 
-### `generic`
+### `constant`<a name="constant"></a>
+
+With the `constant` type, we can return any constant value, defined by the
+**single** value in the `args` array. For example:
+```toml
+[0]
+type = "constant"
+args = [1]
+```
+is a configuration file which, when parsed, results in a `1`.
+
+### `generic` <a name="generic"></a>
 
 With the `generic` type, we can call any arbitrary Python code by passing the
 code as a single argument in `args`. `generic` takes only a single argument. To
@@ -303,18 +320,7 @@ args = ["lambda x: x + 1"]
 ```
 this would construct a function that adds `1` to its argument.
 
-### `constant`
-
-With the `constant` type, we can return any constant value, defined by the
-**single** value in the `args` array. For example:
-```toml
-[0]
-type = "constant"
-args = [1]
-```
-is a configuration file which, when parsed, results in a `1`.
-
-## Calling Functions or Creating Objects Defined in the Code
+## Calling Functions or Creating Objects Defined in the Code <a name="calling"></a>
 
 One awesome feature is that if a function or object is defined in your Python
 code, then that code can be called from the configuration file as long as that
@@ -339,7 +345,7 @@ args = ["<-generic(1)", "<-constant(3)", true]
 ```
 creates a `torch.nn.Linear` with 1 input, 3 outputs, and a bias unit.
 
-## Custom `type`s
+## Custom `type`s <a name="custom_types"></a>
 
 Custom types can be implemented in two ways. First, you can just make a custom
 object and then use a configuration file to create it. Second, you can register
