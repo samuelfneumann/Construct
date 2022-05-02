@@ -4,7 +4,7 @@ import os
 
 # Any modules you need to construct objects from should be placed in an
 # imports file
-_PREFIX = os.environ.get("CONSTRUCT_PY_INCLUDES_DIR", ".")
+_PREFIX = os.environ.get("CONSTRUCT_PY_DIR", ".")
 _INCLUDES_FILE = f"{_PREFIX}/construct_py_includes.py"
 if os.path.exists(_INCLUDES_FILE):
     print(f"Construct.py: using includes file {_INCLUDES_FILE}", file=stderr)
