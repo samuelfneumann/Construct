@@ -128,7 +128,7 @@ def _eval(expr):
     return expr
 
 
-def set(config: dict, value, *positions):
+def set_at(config: dict, value, *positions):
     """
     Set the argument in the call tree at position `*positions` to value.
 
@@ -140,7 +140,7 @@ def set(config: dict, value, *positions):
     keyword argument. If the value is an int, then it is taken to refer to a
     positional argument. If it is a string, then the value is taken to refer to
     a keyword argument. For example, if `positions = (0, "y", 3)`, then
-    calling `set` with this `positions` would change the value of the third
+    calling `set_at` with this `positions` would change the value of the third
     argument to the keyword argument `y` of the first argument of the
     top-level object. `positions` is just a simple indexing mechanism, similar
     to how lists and dicts are indexed.
@@ -171,8 +171,8 @@ def set(config: dict, value, *positions):
                 },
             },
         }
-    >>> set(config, 1, 0)
-    >>> set(config, True, "continuous_action")
+    >>> set_at(config, 1, 0)
+    >>> set_at(config, True, "continuous_action")
     >>> config
         {
             '0': {
@@ -183,15 +183,15 @@ def set(config: dict, value, *positions):
                 },
             },
         }
-    >>> set(config, "what did I just do?")
+    >>> set_at(config, "what did I just do?")
     >>> config
     {'0': "what did I just do?"}
     ```
     """
-    return _set(config, value, [0, *positions])
+    return _set_at(config, value, [0, *positions])
 
 
-def _set(config: dict, value, *positions):
+def _set_at(config: dict, value, *positions):
     if len(positions) == 0:
         config[0] = value
 
