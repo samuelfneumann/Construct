@@ -106,12 +106,12 @@ network = parse(config)
 
 Generally, you'll be using Construct.py to configure objects from some module.
 To do that, Construct.py needs to know about these modules. Construct.py will
-look in the file `.construct_py_imports.py` to find a list of modules to
+look in the file `construct_py_imports.py` to find a list of modules to
 import.
 
 For example, if we wanted to
 parse the above PyTorch configuration file, then we would need a
-`.construct_py_imports.py` file in the current working directory to tell
+`construct_py_imports.py` file in the current working directory to tell
 Construct.py to import PyTorch:
 ```python
 import torch
@@ -133,8 +133,8 @@ Of course, sometimes we don't want this import file to be in the current
 working directory. If you want to specify another directory to contain this
 file, then you'll need to set the environment variable
 `construct_PY_IMPORT_DIR` to the directory which contains the imports file. For
-example, if `.construct_py_imports.py` is located at
-`~/some/other/directory/.construct_py_imports.py`, then you'll need to set and
+example, if `construct_py_imports.py` is located at
+`~/some/other/directory/construct_py_imports.py`, then you'll need to set and
 export `construct_PY_IMPORT_DIR=~/some/other/directory`. For example, you could
 add the following to your `.zshrc`:
 ```zsh
@@ -370,7 +370,7 @@ configuration file.
 ## __MAIN__
 
 There is an alternative way to run Construct.py. If you set the environment
-variable `CONSTRUCT_PY_USE_MAIN` to `true`, then you can import anything from
+variable `CONSTRUCT_PY_USE_MAIN` (to anything), then you can import anything from
 the main module `__main__` when running Construct.py in addition to anything
 defined in the imports file. Hence, if you import module `X` in your main
 module, then there is no need to import `X` in the imports file. Construct.py

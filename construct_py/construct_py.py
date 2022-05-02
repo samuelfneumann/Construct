@@ -4,13 +4,13 @@ import os
 # Any modules you need to construct objects from should be placed in an
 # imports file
 _PREFIX = os.environ.get("CONSTRUCT_PY_IMPORTS_DIR", ".")
-_CONFIG_FILE = f"{_PREFIX}/.construct_py_imports.py"
+_CONFIG_FILE = f"{_PREFIX}/construct_py_imports.py"
 if os.path.exists(_CONFIG_FILE):
     print(f"Construct.py: using imports file {_CONFIG_FILE}", file=stderr)
     exec(open(_CONFIG_FILE).read())
 
 # Import the main module?
-_USE_MAIN = os.environ.get("CONSTRUCT_PY_USE_MAIN", False)
+_USE_MAIN = os.environ.get("CONSTRUCT_PY_USE_MAIN", "") != ""
 if _USE_MAIN:
     # Alternatively, you can import the main module, in which case the
     # program will "just work". Two caveats to this approach:
