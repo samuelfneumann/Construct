@@ -1,6 +1,6 @@
 # Construct.py
 
-The configuration you never knew existed but desperately need.
+The configuration module you never knew existed but desperately need.
 
 ## Table of Contents
 1. [What is Construct.py?](#what_is_construct_py)
