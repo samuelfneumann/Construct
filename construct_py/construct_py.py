@@ -2,7 +2,10 @@ import os
 
 # Any modules you need to construct objects from should be placed in an imports
 # file
-exec(open("./construct_imports.py").read())
+_PREFIX = os.environ.get("CONSTRUCT_PY_IMPORTS_DIR", ".")
+_CONFIG_FILE = f"{_PREFIX}/.construct_imports.py"
+if os.path.exists(_CONFIG_FILE):
+    exec(open(_CONFIG_FILE).read())
 
 # Alternatively, you can import the main module, in which case the program will
 # "just work". Two caveats to this approach:
