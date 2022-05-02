@@ -1,4 +1,4 @@
-from construct.construct import parse
+from construct_py.construct_py import parse
 import pytest
 import numpy as np
 import torch

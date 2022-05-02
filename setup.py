@@ -3,12 +3,12 @@ from setuptools import setup
 
 setup(
     # Needed to silence warnings (and to be a worthwhile package)
-    name='Construct',
-    url='https://github.com/samuelfneumann/construct',
+    name='Construct.py',
+    url='https://github.com/samuelfneumann/Construct-Py',
     author='Samuel Neumann',
     author_email='sfneuman@ualberta.ca',
     # Needed to actually package something
-    packages=['construct'],
+    packages=['construct_py'],
     # Needed for dependencies
     install_requires=[],
     # *strongly* suggested for sharing
