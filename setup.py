@@ -17,5 +17,5 @@ setup(
     license='MIT',
     description='Construct any object from a configuration file',
     # We will also need a readme eventually (there will be a warning)
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
 )
