@@ -10,16 +10,17 @@ This is still under development, expect some adventures!
 2. [Installation](#installation)
 3. [Usage](#usage)
 	1. [Modules](#modules)
-1. [Layout of (TOML) Configuration Files](#layout)
+4. [Layout of (TOML) Configuration Files](#layout)
 	1. [Types](#types)
 	2. [Args](#args)
 	3. [Kwargs](#kwargs)
-1. [Type Descriptions](#type_descriptions)
+5. [Type Descriptions](#type_descriptions)
 	1. [X](#x)
 	2. [constant](#constant)
 	3. [generic](#generic)
-1. [Calling Function Defined in Your Code](#calling)
-1. [Custom Types](#custom_types)
+6. [Calling Function Defined in Your Code](#calling)
+7. [Custom Types](#custom_types)
+8. [\_\_main\_\_](#__main__)
 
 ## What is Construct.py?<a name="what_is_construct_py"></a>
 
@@ -133,11 +134,14 @@ The difference between these two files is the following:
 1. The source code of the `construct_py_includes.py` file is embedded in the
    source code of Construct.py above all the logic of Construct.py. The
    contents of `construct_py_includes.py` is run before Construct.py is
-   interpreted upon importing Construct.py into your own module.
+   interpreted upon importing Construct.py into your own module. Names defined
+   in this file do not need to be fully qualified, but imported names do need
+   to be fully qualified.
 2. The contents of `construct_py_imports` is **imported** into Construct.py
    before Construct.py is interpreted upong importing Construct.py into your
    own module. That is, `from construct_py_imports import *` is run in
-   Construct.py before any actual code of Construct.py is run.
+   Construct.py before any actual code of Construct.py is run. Hence, names
+   defined in this file does not need to be fully qualified.
 
 For example, if we wanted to
 parse the above PyTorch configuration file, then we would need a
@@ -406,7 +410,7 @@ args = [...]
 then `make_agent(args..., kwargs...)` will be called when parsing the
 configuration file.
 
-## __main__
+## __main__ <a name="__main__"></a>
 
 There is an alternative way to run Construct.py. If you set the environment
 variable `CONSTRUCT_PY_USE_MAIN` (to anything), then you can import anything from
