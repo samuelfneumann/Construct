@@ -3,9 +3,9 @@
 The configuration you never knew existed but desperately need.
 
 # Table of Contents
-1. [What is Construct.py?](##What is Construc.py?)
+1. [What is Construct.py?](#what_is_construct_py)
 
-## What is Construct.py?
+## What is Construct.py?<a name="what_is_construct_py"></a>
 
 Construct.py is a Python package that allows you to construct **any** object
 from a configuration file. For example, to construct a CNN in PyTorch with a
