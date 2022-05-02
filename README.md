@@ -367,6 +367,19 @@ args = [...]
 then `make_agent(args..., kwargs...)` will be called when parsing the
 configuration file.
 
+## __MAIN__
+
+There is an alternative way to run Construct.py. If you set the environment
+variable `CONSTRUCT_PY_USE_MAIN` to `true`, then you can import anything from
+the main module `__main__` when running Construct.py in addition to anything
+defined in the imports file. Hence, if you import module `X` in your main
+module, then there is no need to import `X` in the imports file. Construct.py
+can automatically use it. There are two caveats:
+1. You need to qualify any symbol `x` from the main module as `__main__.x` in
+   your configuration files.
+2. Although `CONSTRUCT_PY_USE_MAIN = true` makes Construct.py more powerful,
+	you could very easily turn your program into a pretzel. Use caution!
+
 ## ToDo
 
 - [ ] Docstrings
