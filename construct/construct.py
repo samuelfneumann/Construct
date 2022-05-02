@@ -1,5 +1,14 @@
-import torch
-import tomli
+import os
+
+# Any modules you need to construct objects from should be placed in an imports
+# file
+exec(open("./construct_imports.py").read())
+
+# Alternatively, you can import the main module, in which case the program will
+# "just work". Two caveats to this approach:
+#   1) This can very easily turn your program into a pretzel
+#   2) In the configuration files, modules need to be prefixed with __module__
+# import __main__
 
 
 class _Construct:
@@ -28,6 +37,14 @@ def register(type_: str, f):
     _construct._register(type_, f)
 
 
+def constant(x):
+    return x
+
+
+def generic(x):
+    return _eval(x)
+
+
 # Register some custom functions
 register("constant", lambda x: x)
 register("generic", lambda x: eval(x))
@@ -53,13 +70,12 @@ def _parse(config: dict, top_level: bool = True):
 
         if not isinstance(config[key], dict):
             raise ValueError(f"expected a dict but got {type(config[key])}")
-        # print("key", key, config)
         return _parse(config[key], False)
 
     # Get positions of positional arguments
     args = []
     keys = sorted(keys)
-    int_keys = filter(lambda x: x.isdecimal(), keys)
+    int_keys = list(filter(lambda x: x.isdecimal(), keys))
 
     # Construct positional arguments
     for k in int_keys:
@@ -69,7 +85,7 @@ def _parse(config: dict, top_level: bool = True):
     if "args" in config.keys() and args:
         raise ValueError("args can only be specified in one form")
     elif len(args) == 0 and "args" in config.keys():
-        args = config["args"]
+        args = list(map(lambda x: _eval(x), config["args"]))
 
     # Construct all kwargs
     kwargs = {}
@@ -83,16 +99,22 @@ def _parse(config: dict, top_level: bool = True):
             if k in kwargs:
                 raise KeyError(f"cannot have duplicate key {k})")
             else:
-                kwargs[k] = config["kwargs"][k]
+                kwargs[k] = _eval(config["kwargs"][k])
 
     # Construct the object
     constructor = construct(config["type"])
     return constructor(*args, **kwargs)
 
 
-with open("net.toml", "rb") as i:
-    d = tomli.load(i)
+def _eval(expr):
+    if isinstance(expr, str) and len(expr) > 1 and expr[0] == ":":
+        return eval(expr[1:])
+    return expr
+
+
+# with open("rng.toml", "rb") as i:
+#     d = tomli.load(i)
 
 # print(d)
 # out = construct(d["1"]["type"], d["1"]["args"], d["1"]["kwargs"])
-print("out", _parse(d))
+# print("out", _parse(d))
