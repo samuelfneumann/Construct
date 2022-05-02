@@ -126,3 +126,88 @@ def _eval(expr):
     if isinstance(expr, str) and len(expr) > 2 and expr.startswith("<-"):
         return eval(expr[2:])
     return expr
+
+
+def set(config: dict, value, *positions):
+    """
+    Set the argument in the call tree at position `*positions` to value.
+
+    The index for the top level object needs never be specified. That is, if
+    any index is specified, it is taken to index the arguments to the top level
+    object, not the single top level object itself.
+
+    Each consecutive value in `positions` refers to either an argument or
+    keyword argument. If the value is an int, then it is taken to refer to a
+    positional argument. If it is a string, then the value is taken to refer to
+    a keyword argument. For example, if `positions = (0, "y", 3)`, then
+    calling `set` with this `positions` would change the value of the third
+    argument to the keyword argument `y` of the first argument of the
+    top-level object. `positions` is just a simple indexing mechanism, similar
+    to how lists and dicts are indexed.
+
+    Parameters
+    ----------
+    config : dict
+        The configuration dictionary to modify before parsing
+    value : any
+        The value to set
+    *positions : int or str
+        The position of the argument to set to `value`
+
+    Returns
+    -------
+    dict
+        The modified configuration dictionary
+
+    Examples
+    --------
+    ```python
+    >>> config = {
+            '0': {
+                'type': 'env.mountain_car.MountainCar',
+                'args': ["SEED", 0.99],
+                'kwargs': {
+                    'continuous_action': False,
+                },
+            },
+        }
+    >>> set(config, 1, 0)
+    >>> set(config, True, "continuous_action")
+    >>> config
+        {
+            '0': {
+                'type': 'env.mountain_car.MountainCar',
+                'args': [1, 0.99],
+                'kwargs': {
+                    'continuous_action': True,
+                },
+            },
+        }
+    >>> set(config, "what did I just do?")
+    >>> config
+    {'0': "what did I just do?"}
+    ```
+    """
+    return _set(config, value, [0, *positions])
+
+
+def _set(config: dict, value, *positions):
+    if len(positions) == 0:
+        config[0] = value
+
+    if isinstance(positions, tuple):
+        position = positions[0]
+    else:
+        position = positions
+
+    if len(positions) == 1:
+        config[position] = value
+        return config
+
+    if isinstance(position, int):
+        position = str(position)
+
+    if isinstance(positions[1], int):
+        set(config[position]["args"], value, *positions[1:])
+    else:
+        set(config[position]["kwargs"], value, *positions[1:])
