@@ -19,6 +19,7 @@ type = "torch.nn.ReLU"
 # but is here to showcase the functionality of the generic type.
 [0.2]
 type = "generic"
+# identity function defined in the definitions file
 args = ["<-identity(torch.nn.Flatten())"]
 
 # Then add a linear layer
