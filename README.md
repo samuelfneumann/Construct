@@ -2,6 +2,8 @@
 
 The configuration module you never knew existed but desperately need.
 
+This is still under development, expect some adventures!
+
 ## Table of Contents
 1. [What is Construct.py?](#what_is_construct_py)
 2. [Installation](#installation)
