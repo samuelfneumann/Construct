@@ -86,7 +86,7 @@ network = parse(config)
 ### Modules
 
 Generally, you'll be using Construct.py to configure objects from some module.
-To do that, Construct.py needs to know about these modules. construct.py will
+To do that, Construct.py needs to know about these modules. Construct.py will
 look in the file `.construct_py_imports.py` to find a list of modules to
 import.
 
