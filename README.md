@@ -2,6 +2,9 @@
 
 The configuration you never knew existed but desperately need.
 
+# Table of Contents
+1. [What is Construct.py?](##What is Construc.py?)
+
 ## What is Construct.py?
 
 Construct.py is a Python package that allows you to construct **any** object
@@ -168,7 +171,7 @@ Type Value   |   Interpretation
 `constant`   | Return a constant
 
 Custom `type`s can be registered using the `register` function. More on that
-later.
+later. See below on what each of these types mean.
 
 ### `args`
 
@@ -210,8 +213,8 @@ placed at `[0.x.y.kwargs]`. Each keyword argument is simply listed as a
 key-value pairs:
 ```toml
 [0.x.y.kwargs]
-":key1" = value1
-":key2" = value2
+"key1" = "value1"
+"key2" = "value2"
 ...
 ```
 
