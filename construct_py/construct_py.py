@@ -1,3 +1,4 @@
+from sys import stderr
 import os
 
 # Any modules you need to construct objects from should be placed in an imports
@@ -5,7 +6,7 @@ import os
 _PREFIX = os.environ.get("CONSTRUCT_PY_IMPORTS_DIR", ".")
 _CONFIG_FILE = f"{_PREFIX}/.construct_py_imports.py"
 if os.path.exists(_CONFIG_FILE):
-    print(f"imorting from {_CONFIG_FILE}")
+    print(f"Construct.Py: using imports file {_CONFIG_FILE}", file=stderr)
     exec(open(_CONFIG_FILE).read())
 
 # Alternatively, you can import the main module, in which case the program will

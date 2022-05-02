@@ -1,5 +1,7 @@
 # This file is an example configuration file on how to construct a
-# convolutional neural network using PyTorch
+# convolutional neural network using PyTorch. In this file, a lot of features
+# of Construct.py are shown. I don't recommend mixing so many features, but I
+# have added them here as an example.
 [0]
 type = "torch.nn.Sequential"
 
@@ -13,9 +15,11 @@ args = [1, 10, 3]
 type = "torch.nn.ReLU"
 
 # We flatten the output of the convolutional layer
+# Use a generic type to construct a torch.nn.Flatten. This is not recommended,
+# but is here to showcase the functionality of the generic type.
 [0.2]
-type = "torch.nn.Flatten"
-args = []
+type = "generic"
+args = ["<-torch.nn.Flatten()"]
 
 # Then add a linear layer
 [0.3]

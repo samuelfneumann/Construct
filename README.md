@@ -27,25 +27,27 @@ from a configuration file. For example, to construct a CNN in PyTorch with a
 single convolutional layer and two dense layers, you could use:
 ```toml
 # This file is an example configuration file on how to construct a
-# convolutional neural network using PyTorch
+# convolutional neural network using PyTorch. In this file, a lot of features
+# of Construct.py are shown. I don't recommend mixing so many features, but I
+# have added them here as an example.
 [0]
 type = "torch.nn.Sequential"
 
 # First layer is a convolutional layer
-# This shows the second method of using positional arguments. The 0th
-# argument to the torch.nn.Sequential is defined here.
 [0.0]
 type = "torch.nn.Conv2d"
-args = [4, 10, 3]  # Here is the second way of defining positional arguments
+args = [1, 10, 3]
 
 # Then we add a ReLU nonlinearity
 [0.1]
 type = "torch.nn.ReLU"
 
 # We flatten the output of the convolutional layer
+# Use a generic type to construct a torch.nn.Flatten. This is not recommended,
+# but is here to showcase the functionality of the generic type.
 [0.2]
-type = "torch.nn.Flatten"
-args = []
+type = "generic"
+args = ["<-torch.nn.Flatten()"]
 
 # Then add a linear layer
 [0.3]
@@ -53,7 +55,6 @@ type = "torch.nn.Linear"
 args = ["<-constant(2)", 5]
 
 # Don't use a bias for the linear layer
-# Here is the first way of defining keyword arguments
 [0.3.kwargs]
 bias = false
 
@@ -67,10 +68,10 @@ type = "torch.nn.Linear"
 args = ["<-constant(5)", 1]
 
 # And finally, use a bias on the last layer
-# Here is the second way of defining keyword arguments
 [0.5.bias]
 type = "constant"
 args = [true]
+
 ```
 Note that you can use any configuration file type that can be parsed into a
 `dict`. Above I've used `toml`, but nothing stops you from using a `json` or
