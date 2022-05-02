@@ -99,13 +99,16 @@ import torch
 ```
 Actually, the imports file can be used to defined anything you want
 Construct.py to know about. For example, you could define a function in that
-file and then call that function in your configuration file. Alternatively, you
-could even use:
+file in which case that function is available to **call** in your
+configuration file. Alternatively, you could even use:
 ```python
 exec(open("some_file.py").read())
 ```
-to import the contents of some Python file and evaluate in in the imports file.
+to import the contents of some Python file and evaluate it in the imports file.
 By doing so, everything in `some_file.py` is available to Construct.py.
+
+You can call any function defined in the imports file (see below) or use any
+constant defined in the imports file in a configuration file.
 
 Of course, sometimes we don't want this import file to be in the current
 working directory. If you want to specify another directory to contain this
