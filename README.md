@@ -4,18 +4,18 @@ The configuration you never knew existed but desperately need.
 
 ## What is Construct.py?
 
-Construct.py is a Python package that allows you to conobject **any** object
-from a configuration file. For example, to conobject a CNN in PyTorch with a
+Construct.py is a Python package that allows you to construct **any** object
+from a configuration file. For example, to construct a CNN in PyTorch with a
 single convolutional layer and two dense layers, you could use:
 ```toml
-# This file is an example configuration file on how to conobject a
+# This file is an example configuration file on how to construct a
 # convolutional neural network using PyTorch
 [0]
 type = "torch.nn.Sequential"
 
 # First layer is a convolutional layer
 # This shows the second method of using positional arguments. The 0th
-argument to the torch.nn.Sequential is defined here.
+# argument to the torch.nn.Sequential is defined here.
 [0.0]
 type = "torch.nn.Conv2d"
 args = [4, 10, 3]  # Here is the second way of defining positional arguments
@@ -63,7 +63,7 @@ For example configuration files, see the `examples/` directory.
 ## Installation
 To install Construct.py:
 ```
-pip install git+https://github.com/samuelfneumann/Construct-Py.git#egg=conobject_py
+pip install git+https://github.com/samuelfneumann/Construct-Py.git#egg=construct_py
 ```
 
 ## Usage
@@ -73,7 +73,7 @@ is called `parse`. To parse a configuration file, first read it into a `dict`.
 For example, given a configuration file called `net.toml` in the current
 working directory:
 ```python
-from conobject_py import parse
+from construct_py import parse
 import tomli
 import torch
 
@@ -86,13 +86,13 @@ network = parse(config)
 ### Modules
 
 Generally, you'll be using Construct.py to configure objects from some module.
-To do that, Construct.py needs to know about these modules. Conobject.py will
-look in the file `.conobject_py_imports.py` to find a list of modules to
+To do that, Construct.py needs to know about these modules. construct.py will
+look in the file `.construct_py_imports.py` to find a list of modules to
 import.
 
 For example, if we wanted to
 parse the above PyTorch configuration file, then we would need a
-`.conobject_py_imports.py` file in the current working directory to tell
+`.construct_py_imports.py` file in the current working directory to tell
 Construct.py to import PyTorch:
 ```python
 import torch
@@ -110,13 +110,13 @@ By doing so, everything in `some_file.py` is available to Construct.py.
 Of course, sometimes we don't want this import file to be in the current
 working directory. If you want to specify another directory to contain this
 file, then you'll need to set the environment variable
-`CONobject_PY_IMPORT_DIR` to the directory which contains the imports file. For
-example, if `.conobject_py_imports.py` is located at
-`~/some/other/directory/.conobject_py_imports.py`, then you'll need to set and
-export `CONobject_PY_IMPORT_DIR=~/some/other/directory`. For example, you could
+`construct_PY_IMPORT_DIR` to the directory which contains the imports file. For
+example, if `.construct_py_imports.py` is located at
+`~/some/other/directory/.construct_py_imports.py`, then you'll need to set and
+export `construct_PY_IMPORT_DIR=~/some/other/directory`. For example, you could
 add the following to your `.zshrc`:
 ```zsh
-export CONobject_PY_IMPORT_DIR=~/some/other/directory
+export construct_PY_IMPORT_DIR=~/some/other/directory
 ```
 
 ## Layout of (TOML) Configuration Files
@@ -135,7 +135,7 @@ above the configuration of `[0.0]` refers to the first argument to the
 configuration of `[0]`. Similarly, `[0.x]` refers to the `xth` argument to the
 function call defined in `[0]`. Each `.` refers to a new depth of the tree. For
 example, `[0.x.y.z]` is the `zth` argument to the `yth` function call, which
-itself is the `xth` argument to the final conobjected object, defined in layer
+itself is the `xth` argument to the final constructed object, defined in layer
 `[0]`. If instead of number, you used string, then these are treated as keyword
 arguments. For example `[0.kwarg]` would be a keyword argument with name
 `kwarg` to the call of the function defined in `[0]`.
@@ -188,12 +188,12 @@ function call at layer `[i]`, you can specify the positional arguments as
 [i.j]` for each positional argument `j`. The positional arguments have to be
 enumerated starting from 0 and have an increment of 1. The benefit of this
 second approach is it allows the positional arguments themselves to be
-complicated objects which are themselves conobjected by a portion of the
+complicated objects which are themselves constructed by a portion of the
 configuration file. For example, the top-level object at position `[0]` could
 be a `torch.nn.Sequential`, and one of its children could also be a
 `torch.nn.Sequential`. This functionality is not available with the first
 positional argument method, which allows only simple objects to be
-conobjected as positional arguments.
+constructed as positional arguments.
 
 The two different methods of using positional arguments are mutually exclusive.
 You cannot use both.
@@ -233,7 +233,7 @@ denote a sequential argument. If the `X` node is at position `1.x` in the
 tree, then the `yth` argument to `X` will be at position `1.x.y`. Hence, we
 have an ordering of arguments. The benefit to this approach is that any
 argument to the function can be a subtree of many, many elements, and so it's
-easy to conobject complex objects or call functions on complex objects.
+easy to construct complex objects or call functions on complex objects.
 
 For example, if we want to create object `A`, but object `A` takes in object
 `B`, which takes in object `C`, we can easily do the following:
