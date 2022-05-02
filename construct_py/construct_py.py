@@ -45,8 +45,8 @@ def generic(x):
 
 
 # Register some custom functions
-register("constant", lambda x: x)
-register("generic", lambda x: eval(x))
+register("constant", constant)
+register("generic", generic)
 
 
 def parse(config: dict):
