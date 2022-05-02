@@ -2,8 +2,15 @@
 
 The configuration you never knew existed but desperately need.
 
-# Table of Contents
+## Table of Contents
 1. [What is Construct.py?](#what_is_construct_py)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Modules](#modules)
+4. [Layout of (TOML) Configuration Files](#layout)
+4. [Types](#types)
+4. [Args](#args)
+4. [Kwargs](#kwargs)
 
 ## What is Construct.py?<a name="what_is_construct_py"></a>
 
@@ -63,13 +70,13 @@ Note that you can use any configuration file type that can be parsed into a
 
 For example configuration files, see the `examples/` directory.
 
-## Installation
+## Installation <a name="installation"></a>
 To install Construct.py:
 ```
 pip install git+https://github.com/samuelfneumann/Construct-Py.git#egg=construct_py
 ```
 
-## Usage
+## Usage <a name="usage"></a>
 
 There is a single function that is the workhorse of Construct.py. This function
 is called `parse`. To parse a configuration file, first read it into a `dict`.
@@ -86,7 +93,7 @@ with open("net.toml", "rb"): as infile:
 network = parse(config)
 ```
 
-### Modules
+### Modules <a name="modules"></a>
 
 Generally, you'll be using Construct.py to configure objects from some module.
 To do that, Construct.py needs to know about these modules. Construct.py will
@@ -125,7 +132,7 @@ add the following to your `.zshrc`:
 export construct_PY_IMPORT_DIR=~/some/other/directory
 ```
 
-## Layout of (TOML) Configuration Files
+## Layout of (TOML) Configuration Files <a name="layout"></a>
 
 Each configuration file is treated as a *Call Tree*, which denotes function
 calls with their arguments. The tree should have a single root node, which
@@ -159,7 +166,7 @@ args = l # a list of values
 where `x` can be any sequence of numbers separated by a `.`, `t` is some type
 description (described below), and `l` is a list of values.
 
-### `type`
+### `type` <a name="types"></a>
 
 Each successive layer has a `type`, which defines which function is called or
 what object is created. Valid `type` values are:
@@ -173,7 +180,7 @@ Type Value   |   Interpretation
 Custom `type`s can be registered using the `register` function. More on that
 later. See below on what each of these types mean.
 
-### `args`
+### `args` <a name="args"></a>
 
 Each configuration layer also has an associated `args` key. The value of this
 must be a `list`. In this list, you can put any valid constant value such as
@@ -204,7 +211,7 @@ constructed as positional arguments.
 The two different methods of using positional arguments are mutually exclusive.
 You cannot use both.
 
-### `kwargs`
+### `kwargs` <a name="kwargs"></a>
 
 Keyword arguments for layer `[0...x]` are placed in a dictionary at
 `[0...x.kwargs]` where the `...` refers to any number of nested
@@ -228,7 +235,7 @@ method of specifying positional arguments works.
 
 The two methods of using keyword arguments are mixable.
 
-## `type`s
+## `type`s <a name="type_descriptions"></a>
 
 ### `X`
 
