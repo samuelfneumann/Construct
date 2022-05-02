@@ -188,7 +188,7 @@ def set_at(config: dict, value, *positions):
     {'0': "what did I just do?"}
     ```
     """
-    return _set_at(config, value, [0] + positions)
+    return _set_at(config, value, [0] + list(positions))
 
 
 def _set_at(config: dict, value, *positions):
