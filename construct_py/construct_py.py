@@ -4,18 +4,18 @@ import os
 
 # Any modules you need to construct objects from should be placed in an
 # imports file
-_PREFIX = os.environ.get("CONSTRUCT_PY_IMPORTS_DIR", ".")
-_IMPORTS_FILE = f"{_PREFIX}/construct_py_imports.py"
-if os.path.exists(_IMPORTS_FILE):
-    print(f"Construct.py: using imports file {_IMPORTS_FILE}", file=stderr)
-    exec(open(_IMPORTS_FILE).read())
+_PREFIX = os.environ.get("CONSTRUCT_PY_INCLUDES_DIR", ".")
+_INCLUDES_FILE = f"{_PREFIX}/construct_py_includes.py"
+if os.path.exists(_INCLUDES_FILE):
+    print(f"Construct.py: using includes file {_INCLUDES_FILE}", file=stderr)
+    exec(open(_INCLUDES_FILE).read())
 
-_DEFINITIONS_DIR = f"{_PREFIX}"
-if os.path.exists(_DEFINITIONS_DIR):
-    sys.path.append(_DEFINITIONS_DIR)
-    print(f"Construct.py: using definitions file {_DEFINITIONS_DIR}",
+_IMPORTS_DIR = f"{_PREFIX}"
+if os.path.exists(_IMPORTS_DIR):
+    sys.path.append(_IMPORTS_DIR)
+    print(f"Construct.py: using imports file {_IMPORTS_DIR}",
           file=stderr)
-    from construct_py_definitions import *
+    from construct_py_imports import *
 
 # Import the main module?
 _USE_MAIN = os.environ.get("CONSTRUCT_PY_USE_MAIN", "") != ""

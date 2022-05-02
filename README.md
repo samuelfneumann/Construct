@@ -106,35 +106,35 @@ network = parse(config)
 
 Generally, you'll be using Construct.py to configure objects from some module.
 To do that, Construct.py needs to know about these modules. Construct.py will
-look in the file `construct_py_imports.py` to find a list of modules to
+look in the file `construct_py_includes.py` to find a list of modules to
 import.
 
 For example, if we wanted to
 parse the above PyTorch configuration file, then we would need a
-`construct_py_imports.py` file in the current working directory to tell
+`construct_py_includes.py` file in the current working directory to tell
 Construct.py to import PyTorch:
 ```python
 import torch
 ```
-Actually, the imports file can be used to defined anything you want
+Actually, the includes file can be used to defined anything you want
 Construct.py to know about. For example, you could define a function in that
 file in which case that function is available to **call** in your
 configuration file. Alternatively, you could even use:
 ```python
 exec(open("some_file.py").read())
 ```
-to import the contents of some Python file and evaluate it in the imports file.
+to import the contents of some Python file and evaluate it in the includes file.
 By doing so, everything in `some_file.py` is available to Construct.py.
 
-You can call any function defined in the imports file (see below) or use any
-constant defined in the imports file in a configuration file.
+You can call any function defined in the includes file (see below) or use any
+constant defined in the includes file in a configuration file.
 
 Of course, sometimes we don't want this import file to be in the current
 working directory. If you want to specify another directory to contain this
 file, then you'll need to set the environment variable
-`construct_PY_IMPORT_DIR` to the directory which contains the imports file. For
-example, if `construct_py_imports.py` is located at
-`~/some/other/directory/construct_py_imports.py`, then you'll need to set and
+`construct_PY_IMPORT_DIR` to the directory which contains the includes file. For
+example, if `construct_py_includes.py` is located at
+`~/some/other/directory/construct_py_includes.py`, then you'll need to set and
 export `construct_PY_IMPORT_DIR=~/some/other/directory`. For example, you could
 add the following to your `.zshrc`:
 ```zsh
@@ -202,7 +202,7 @@ def f(x):
 ```
 then if you specify `args=[1, 2, ":f(2)"]` in your code, this will be expanded
 to `args=[1, 2, 3]` at runtime. Of course, Construct.py needs to know about the
-function `f`, and so it would need to be defined in the imports file.
+function `f`, and so it would need to be defined in the includes file.
 
 There is an alternative method to specifying arguments. Instead of having a
 list of constants, you could have a tree-like objecture. For an argument to the
@@ -281,21 +281,21 @@ type = "C"
 This effectively creates an object by calling `A(B(C(...), ...), ...)`.
 
 One caveat to using `X` is that names must be **fully qualified** based on the
-imports file. So, if you have the following module tree:
+includes file. So, if you have the following module tree:
 ```
 module X
 	module Y
 		function y
 ```
-and you have the following in your imports file:
+and you have the following in your includes file:
 ```python
 import X
 ```
 then to use `y` in a configuration file you need to specify it as `X.Y.y`. In
-instead you import `Y` in your imports file, you can specify `y` as `Y.y`. If
-you use `from X.Y import y` in your imports file, then you can specify `y` as
+instead you import `Y` in your includes file, you can specify `y` as `Y.y`. If
+you use `from X.Y import y` in your includes file, then you can specify `y` as
 `y` in your configuration file. The general rule is that however you would
-access the symbol `y` in your imports file, that's how `y` must be specified
+access the symbol `y` in your includes file, that's how `y` must be specified
 in your configuration file as well. This goes for all `type`s, not just the `X`
 type.
 
@@ -327,18 +327,18 @@ this would construct a function that adds `1` to its argument.
 
 One awesome feature is that if a function or object is defined in your Python
 code, then that code can be called from the configuration file as long as that
-code is available in your imports file!
+code is available in your includes file!
 Well, not exactly, but almost! Really, the configuration is deferred to
 runtime, so when we create an object, we can just run some functions and put
 the returned values in the call tree.
 
 For example, if you have a function `f` defined in your
-imports with a variable `x` defined in your imports file,
+includes with a variable `x` defined in your includes file,
 then you can call `f(x)` in your configuration file by using the `<-f(x)`
 operator.
 
 Two functions come bundled with Construct.py that can be called without
-defining them in the imports file. These are `constant` and `generic` as
+defining them in the includes file. These are `constant` and `generic` as
 defined above. Hence, from any configuration file you can use `<-constant(x)`
 or `<-generic(x)` by default. For example:
 ```toml
@@ -372,8 +372,8 @@ configuration file.
 There is an alternative way to run Construct.py. If you set the environment
 variable `CONSTRUCT_PY_USE_MAIN` (to anything), then you can import anything from
 the main module `__main__` when running Construct.py in addition to anything
-defined in the imports file. Hence, if you import module `X` in your main
-module, then there is no need to import `X` in the imports file. Construct.py
+defined in the includes file. Hence, if you import module `X` in your main
+module, then there is no need to import `X` in the includes file. Construct.py
 can automatically use it. There are two caveats:
 1. You need to qualify any symbol `x` from the main module as `__main__.x` in
    your configuration files.
@@ -383,4 +383,4 @@ can automatically use it. There are two caveats:
 ## ToDo
 
 - [ ] Docstrings
-- [ ] Document definitions file
+- [ ] Document imports file
