@@ -209,6 +209,12 @@ def _set_at(config: dict, value, *positions):
         position = str(position)
 
     if isinstance(positions[1], int):
-        _set_at(config[position]["args"], value, *positions[1:])
+        if "args" in config[position]:
+            _set_at(config[position]["args"], value, *positions[1:])
+        else:
+            _set_at(config[position], value, *positions[1:])
     else:
-        _set_at(config[position]["kwargs"], value, *positions[1:])
+        if "kwargs" in config[position]:
+            _set_at(config[position]["kwargs"], value, *positions[1:])
+        else:
+            _set_at(config[position], value, *positions[1:])
