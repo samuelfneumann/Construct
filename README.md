@@ -336,7 +336,7 @@ and you have the following in your includes file:
 ```python
 import X
 ```
-then to use `y` in a configuration file you need to specify it as `X.Y.y`. In
+then to use `y` in a configuration file you need to specify it as `X.Y.y`. If
 instead you import `Y` in your includes file, you can specify `y` as `Y.y`. If
 you use `from X.Y import y` in your includes file, then you can specify `y` as
 `y` in your configuration file. The general rule is that however you would
