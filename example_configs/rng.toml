@@ -2,11 +2,11 @@
 type = "identity"
 
 [0.0]
-type = "call"
+type = "side_effect"
 
-[0.0.0]
-type = "constant"
-args = ["test_fn"]
+[0.0.0]				   # OR
+type = "generic"       # "constant"
+args = ["<-test_fn"]   # ["test_fn"]
 
 [0.0.1]
 type = "np.random.default_rng"

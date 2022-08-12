@@ -76,10 +76,20 @@ def side_effect(fn, *args, **kwargs):
     return {"args": args, "kwargs": kwargs}
 
 
+def arg_at(x, *args, **kwargs):
+    return args[x]
+
+
+def kwarg_at(x, *args, **kwargs):
+    return kwargs[x]
+
+
 # Register some custom functions
 register("constant", constant)
 register("generic", generic)
 register("side_effect", side_effect)
+register("arg_at", arg_at)  # TODO: Needs documentation
+register("kwarg_at", kwarg_at)  # TODO: Needs documentation
 
 
 def parse(config: dict):
