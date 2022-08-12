@@ -76,13 +76,13 @@ def side_effect(fn, *args, **kwargs):
     return {"args": args, "kwargs": kwargs}
 
 
-def arg_at(x, inputs):
-    args = inputs["args"]
+def arg_at(x, to_index):
+    args = to_index["args"]
     return args[x]
 
 
-def kwarg_at(x, inputs):
-    kwargs = inputs["kwargs"]
+def kwarg_at(x, to_index):
+    kwargs = to_index["kwargs"]
     return kwargs[x]
 
 

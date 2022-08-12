@@ -18,7 +18,8 @@ This is still under development, expect some adventures!
 	1. [X](#x)
 	2. [constant](#constant)
 	3. [generic](#generic)
-	3. [side_effect](#side_effect)
+	4. [side_effect](#side_effect)
+	5. [arg_at/kwarg_at](#arg_at/kwarg_at)
 6. [Calling Function Defined in Your Code](#calling)
 7. [Custom Types](#custom_types)
 8. [\_\_main\_\_](#__main__)
@@ -230,6 +231,8 @@ Type Value   |   Interpretation
 `generic`    | Call any generic Python code such as `lambda x: x + 1`.
 `side_effect`| Similar to `generic`, but replaces its node in the call tree with its child subtree. Used to apply function side-effects to a subtree.
 `constant`   | Return a constant.
+`arg_at`     | Indexes the arguments of the child tree
+`kwarg_at`   | Indexes the keyword arguments of the child tree
 
 Custom `type`s can be registered using the `register` function. More on that
 later. See below on what each of these types mean.
@@ -355,6 +358,9 @@ args = [1]
 ```
 is a configuration file which, when parsed, results in a `1`.
 
+A `constant` type takes one argument. If more than one argument is specified,
+an error is raised.
+
 ### `generic` <a name="generic"></a>
 
 With the `generic` type, we can call any arbitrary Python code by passing the
@@ -368,12 +374,16 @@ args = ["lambda x: x + 1"]
 ```
 this would construct a function that adds `1` to its argument.
 
+A `generic` type takes one argument. If more than one argument is specified, an
+error is raised.
+
 ### `side_effect` <a name="side_effect"></a>
 
 With the `side_effect` type, we can call any arbitrary function with side effects. The
 function will be run with the arguments and kwargs specified by the call tree
 under the `side_effect` node. Once the `side_effect` has been completed, with its
 side effects, the `side_effect` node will be replaced by its child subtree:
+
 
 ```
 parent_tree --- side_effect node --- child_tree
@@ -383,18 +393,50 @@ will become:
 parent_tree --- child_tree with side_effect applied
 ```
 
-If the `side_effect` node is at the top of the CallTree, then it should take in a
-single argument or kwarg. In this case, the `side_effect` node is not replaced by its
+If the `side_effect` node is at the top of the CallTree, and it takes in a
+single argument or kwarg, then the `side_effect` node is not replaced by its
 child subtree, but is rather replaced by its single argument or kwarg.
 
 The `side_effect` type is very similar to the `X` type, but doesn't construct
 any object in the CallTree. Instead, it replaces itself with its child subtree.
 
-The `args` for a `side_effect` node should be in the following order:
-1. Name of function to call (str). For example `"<-test_fn"` or `"test_fn"`
-2. Arguments to the function, in either form of argument specification (i.e. in
-   an `args` array or as numbered nodes in a subtree)
-3. Keyword arguments to the function as named nodes in a subtree
+The arguments to a `side_effect` type must start with the name of the function
+to call (str). The arguments to the function to call must come after the name
+of the function to call in the arguments for a `side_effect`. For example:
+
+```toml
+[0]
+type = "side_effect"
+
+[0.0]  # The name of the function to call
+type = "constant"
+args = ["function_to_call"]
+
+[0.1]  # The first argument to the function to call
+# ...
+
+[0.2]  # The second argument to the function to call
+# ...
+
+[0.kwarg1]  # A kwarg to the function to call
+# ...
+```
+
+### `arg_at/kwarg_at` <a name="arg_at/kwarg_at"></a>
+
+The `arg_at` and `kwarg_at` types index the args/kwargs of their subtree. The
+node containing an `arg_at`/`kwarg_at` is replaced by the indexed arg/kwarg.
+This is most often useful in conjunction with they `side_effect` type. For
+example, if a `side_effect` type is the root of the CallTree, then an
+`arg_at`/`kwarg_at` can be used to extract a single value from the
+`side_effect` and return that value as the value configured by the
+configuration file.
+
+The arguments to an `arg_at`/`kwarg_at` type are:
+1. The index/keyword to access
+2. The node to index the args/kwargs of
+
+If more than 2 arguments are given, an error is raised.
 
 ## Calling Functions or Creating Objects Defined in the Code <a name="calling"></a>
 

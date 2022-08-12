@@ -5,5 +5,9 @@ def test_fn(x, _):
     x.bit_generator.state = newRNG.bit_generator.state
 
 
+def add(*args):
+    return sum(*args)
+
+
 def identity(x):
     return x
