@@ -1,7 +1,17 @@
 [0]
-type = "np.random.default_rng"
+type = "identity"
 
 [0.0]
+type = "call"
+
+[0.0.0]
+type = "constant"
+args = ["test_fn"]
+
+[0.0.1]
+type = "np.random.default_rng"
+
+[0.0.1.0]
 type = "constant"
 args = [1]
 

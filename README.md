@@ -18,6 +18,7 @@ This is still under development, expect some adventures!
 	1. [X](#x)
 	2. [constant](#constant)
 	3. [generic](#generic)
+	3. [call](#call)
 6. [Calling Function Defined in Your Code](#calling)
 7. [Custom Types](#custom_types)
 8. [\_\_main\_\_](#__main__)
@@ -365,6 +366,17 @@ type = "generic"
 args = ["lambda x: x + 1"]
 ```
 this would construct a function that adds `1` to its argument.
+
+### `call` <a name="call"></a>
+
+With the `call` type, we can call any arbitrary function with side effects. The
+function will be run with the arguments and kwargs specified by the call tree
+under the `call` node. Once the `call` has been completed, with its
+side effects, the `call` node will be replaced by its child subtree.
+
+If the `call` node is at the top of the CallTree, then it should take in a
+single argument or kwarg. In this case, the `call` node is not replaced by its
+child subtree, but is rather replaced by its single argument or kwarg.
 
 ## Calling Functions or Creating Objects Defined in the Code <a name="calling"></a>
 

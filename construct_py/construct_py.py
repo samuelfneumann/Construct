@@ -39,8 +39,6 @@ class _Custom:
             return eval(type_)
         return self._custom_ops[type_]
 
-        # return self._custom_ops.get(type_, eval(type_))
-
 
 _custom = _Custom()
 
@@ -61,9 +59,27 @@ def generic(x):
     return _eval(x)
 
 
+def call(fn, *args, **kwargs):
+    if isinstance(fn, str):
+        fn = _eval(fn)
+    if isinstance(fn, str):
+        fn = eval(fn)
+
+    fn(*args, **kwargs)
+
+    if len(args) == 1 and len(kwargs) == 0:
+        return args[0]
+    elif len(args) == 0 and len(kwargs) == 1:
+        key = list(kwargs.keys())[0]
+        return kwargs[key]
+
+    return {"args": args, "kwargs": kwargs}
+
+
 # Register some custom functions
 register("constant", constant)
 register("generic", generic)
+register("call", call)  # Call a function with side effects
 
 
 def parse(config: dict):
