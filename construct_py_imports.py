@@ -1,4 +1,4 @@
-def test_fn(x):
+def test_fn(x, _):
     import numpy as np
     import time
     newRNG = np.random.default_rng(int(time.time()))

@@ -27,3 +27,5 @@ def test_rng():
 
     out = parse(config)
     assert isinstance(out, np.random.Generator), "not a np.random.Generator"
+
+test_rng()

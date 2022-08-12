@@ -1,17 +1,25 @@
 [0]
-type = "identity"
+type = "arg_at"
 
 [0.0]
+type = "constant"
+args = [0]
+
+[0.1]
 type = "side_effect"
 
-[0.0.0]				   # OR
+[0.1.0]				   # OR
 type = "generic"       # "constant"
 args = ["<-test_fn"]   # ["test_fn"]
 
-[0.0.1]
+[0.1.1]
 type = "np.random.default_rng"
 
-[0.0.1.0]
+[0.1.1.0]
+type = "constant"
+args = [1]
+
+[0.1.2]
 type = "constant"
 args = [1]
 
