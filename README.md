@@ -387,6 +387,15 @@ If the `side_effect` node is at the top of the CallTree, then it should take in 
 single argument or kwarg. In this case, the `side_effect` node is not replaced by its
 child subtree, but is rather replaced by its single argument or kwarg.
 
+The `side_effect` type is very similar to the `X` type, but doesn't construct
+any object in the CallTree. Instead, it replaces itself with its child subtree.
+
+The `args` for a `side_effect` node should be in the following order:
+1. Name of function to call (str). For example `"<-test_fn"` or `"test_fn"`
+2. Arguments to the function, in either form of argument specification (i.e. in
+   an `args` array or as numbered nodes in a subtree)
+3. Keyword arguments to the function as named nodes in a subtree
+
 ## Calling Functions or Creating Objects Defined in the Code <a name="calling"></a>
 
 One awesome feature is that if a function or object is defined in your Python
