@@ -176,13 +176,13 @@ constant defined in the includes file in a configuration file.
 Of course, sometimes we don't want this import file to be in the current
 working directory. If you want to specify another directory to contain this
 file, then you'll need to set the environment variable
-`CONSTRUCT_PY__DIR` to the directory which contains the includes file. For
+`CONSTRUCT_PY_DIR` to the directory which contains the includes file. For
 example, if `construct_py_includes.py` is located at
 `~/some/other/directory/construct_py_includes.py`, then you'll need to set and
-export `CONSTRUCT_PY__DIR=~/some/other/directory`. For example, you could
+export `CONSTRUCT_PY_DIR=~/some/other/directory`. For example, you could
 add the following to your `.zshrc`:
 ```zsh
-export CONSTRUCT_PY__DIR=~/some/other/directory
+export CONSTRUCT_PY_DIR=~/some/other/directory
 ```
 
 ## Layout of (TOML) Configuration Files <a name="layout"></a>
