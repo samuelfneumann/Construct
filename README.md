@@ -18,7 +18,7 @@ This is still under development, expect some adventures!
 	1. [X](#x)
 	2. [constant](#constant)
 	3. [generic](#generic)
-	3. [call](#call)
+	3. [side_effect](#side_effect)
 6. [Calling Function Defined in Your Code](#calling)
 7. [Custom Types](#custom_types)
 8. [\_\_main\_\_](#__main__)
@@ -227,8 +227,9 @@ what object is created. Valid `type` values are:
 Type Value   |   Interpretation
 -------------|------------------
 `X` 		 | Call the function `X` in the code. `X` can be any valid callable symbol which is defined in the code, but must be **fully qualified**.
-`generic`    | Call any generic Python code such as `lambda x: x + 1`
-`constant`   | Return a constant
+`generic`    | Call any generic Python code such as `lambda x: x + 1`.
+`side_effect`| Similar to `generic`, but replaces its node in the call tree with its child subtree. Used to apply function side-effects to a subtree.
+`constant`   | Return a constant.
 
 Custom `type`s can be registered using the `register` function. More on that
 later. See below on what each of these types mean.
@@ -367,15 +368,23 @@ args = ["lambda x: x + 1"]
 ```
 this would construct a function that adds `1` to its argument.
 
-### `call` <a name="call"></a>
+### `side_effect` <a name="side_effect"></a>
 
-With the `call` type, we can call any arbitrary function with side effects. The
+With the `side_effect` type, we can call any arbitrary function with side effects. The
 function will be run with the arguments and kwargs specified by the call tree
-under the `call` node. Once the `call` has been completed, with its
-side effects, the `call` node will be replaced by its child subtree.
+under the `side_effect` node. Once the `side_effect` has been completed, with its
+side effects, the `side_effect` node will be replaced by its child subtree:
 
-If the `call` node is at the top of the CallTree, then it should take in a
-single argument or kwarg. In this case, the `call` node is not replaced by its
+```
+parent_tree --- side_effect node --- child_tree
+```
+will become:
+```
+parent_tree --- child_tree with side_effect applied
+```
+
+If the `side_effect` node is at the top of the CallTree, then it should take in a
+single argument or kwarg. In this case, the `side_effect` node is not replaced by its
 child subtree, but is rather replaced by its single argument or kwarg.
 
 ## Calling Functions or Creating Objects Defined in the Code <a name="calling"></a>

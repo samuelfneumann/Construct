@@ -59,7 +59,7 @@ def generic(x):
     return _eval(x)
 
 
-def call(fn, *args, **kwargs):
+def side_effect(fn, *args, **kwargs):
     if isinstance(fn, str):
         fn = _eval(fn)
     if isinstance(fn, str):
@@ -79,7 +79,7 @@ def call(fn, *args, **kwargs):
 # Register some custom functions
 register("constant", constant)
 register("generic", generic)
-register("call", call)  # Call a function with side effects
+register("side_effect", side_effect)
 
 
 def parse(config: dict):
